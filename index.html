@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Top of the Feed | Hugo Ferrinho Lopes</title>
+<meta name="description" content="A classroom game on social media feeds. You decide which post goes to the top and see what your choice does to attention, accuracy and agreement. By Hugo Ferrinho Lopes for GOVT 3421, Youth and Politics, Georgetown University.">
+<meta name="author" content="Hugo Ferrinho Lopes">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Top of the Feed | Hugo Ferrinho Lopes">
+<meta property="og:description" content="A classroom game on social media feeds: choose the top post and see the trade-offs between attention, accuracy and agreement. GOVT 3421, Youth and Politics, Georgetown University.">
+<meta property="og:url" content="https://hugoferrinholopes.github.io/top-of-the-feed/">
+<meta property="og:image" content="https://hugoferrinholopes.github.io/top-of-the-feed/og-image.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Top of the Feed, a classroom game on social media feeds, with a phone feed of three posts and the labels attention, accuracy and agreement.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Top of the Feed">
+<meta name="twitter:description" content="A classroom game on social media feeds: choose the top post and see the trade-offs between attention, accuracy and agreement.">
+<meta name="twitter:image" content="https://hugoferrinholopes.github.io/top-of-the-feed/og-image.png">
+<meta name="twitter:image:alt" content="Top of the Feed, a classroom game on social media feeds, with a phone feed of three posts and the labels attention, accuracy and agreement.">
+<style>
+:root{
+  --blue:#004676; --light:#4393C3; --orange:#BE4B14; --grey:#5F6368;
+  --ink:#1b1f23; --line:#d9dde1; --pale:#f3f6f9; --paleo:#fbf1ec; --gold:#fff4cc; --bg:#ffffff;
+}
+*{box-sizing:border-box}
+html{font-size:112.5%}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  line-height:1.5}
+main{max-width:46rem;margin:0 auto;padding:0 1rem 4rem}
+h1{font-size:1.9rem;line-height:1.2;color:var(--blue);margin:1.4rem 0 .3rem}
+h2{font-size:1.3rem;color:var(--blue);margin:2.2rem 0 .4rem;padding-top:.8rem;border-top:2px solid var(--line)}
+p{margin:.45rem 0}
+.lede{font-size:1.02rem;color:var(--grey)}
+.small{font-size:.85rem;color:var(--grey)}
+button{font:inherit;cursor:pointer;min-height:44px;border-radius:.45rem}
+button:focus-visible,summary:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.btn{background:var(--blue);color:#fff;border:0;padding:.5rem 1.1rem;font-weight:700}
+.btn[disabled]{background:#c7ccd1;color:#4a4f54;cursor:not-allowed}
+.ghost{background:#fff;color:var(--blue);border:2px solid var(--blue);padding:.45rem .9rem}
+/* role */
+.role{background:var(--blue);color:#fff;border-radius:.7rem;padding:.8rem 1rem;margin:1rem 0}
+.role .you{font-size:.85rem;opacity:.9;letter-spacing:.05em;text-transform:uppercase}
+.role .name{font-size:1.7rem;font-weight:800;line-height:1.15;margin:.1rem 0 .35rem}
+.role p{margin:.3rem 0}
+.howto{border:2px solid var(--ink);border-radius:.6rem;padding:.6rem .9rem;margin:1rem 0;background:#fff}
+.howto ol{margin:.3rem 0 .2rem;padding-left:1.3rem}
+.howto li{margin:.2rem 0}
+details.box{border:1px solid var(--line);border-radius:.6rem;padding:.2rem .8rem;margin:.8rem 0;background:#fff}
+details.box summary{cursor:pointer;font-weight:700;color:var(--blue);min-height:44px;display:flex;align-items:center}
+.word{font-size:.92rem;border-left:4px solid var(--light);background:var(--pale);padding:.35rem .6rem;border-radius:.3rem;margin:.35rem 0}
+.word strong{color:var(--blue)}
+/* rounds */
+.story{background:var(--pale);border-radius:.5rem;padding:.55rem .8rem;margin:.6rem 0}
+.feed{display:grid;gap:.6rem;margin:.7rem 0}
+.post{display:block;width:100%;text-align:left;background:#fff;color:var(--ink);border:2px solid var(--line);border-radius:.7rem;padding:.6rem .8rem}
+.post:hover{border-color:var(--light)}
+.post[aria-pressed="true"]{border-color:var(--orange);background:var(--paleo);box-shadow:0 0 0 2px var(--orange) inset}
+.post .who{font-weight:700;color:var(--blue)}
+.post .meta{font-size:.8rem;color:var(--grey)}
+.post .txt{display:block;margin-top:.25rem}
+.post .pick{display:inline-block;font-size:.78rem;font-weight:700;color:#fff;background:var(--orange);border-radius:.3rem;padding:0 .4rem;margin-left:.3rem;visibility:hidden}
+.post[aria-pressed="true"] .pick{visibility:visible}
+.post[disabled]{cursor:default}
+.actions{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin:.6rem 0}
+/* results */
+.result{border:2px solid var(--blue);border-radius:.7rem;padding:.7rem .9rem;margin:.8rem 0;background:#fff}
+.result h3{margin:0 0 .4rem;font-size:1.05rem;color:var(--blue)}
+.meters{display:grid;gap:.35rem;margin:.3rem 0 .6rem}
+.meter{display:grid;grid-template-columns:7.2rem 4.6rem 1fr;align-items:center;gap:.5rem}
+.meter .lab{font-weight:700}
+.meter .val{font-weight:700}
+.bars{display:flex;gap:.25rem}
+.bars span{display:block;height:.75rem;flex:1;border-radius:.2rem;background:#e7eaee}
+.bars span.on{background:var(--light)}
+.meter.acc .bars span.on{background:var(--blue)}
+.meter.agr .bars span.on{background:var(--orange)}
+.compare{border-top:1px solid var(--line);margin-top:.5rem;padding-top:.4rem;font-size:.95rem}
+.compare p{margin:.25rem 0}
+.tag{display:inline-block;font-size:.8rem;font-weight:700;border-radius:.3rem;padding:0 .4rem;background:var(--gold);border:1px solid #c79a00}
+.sumrow{border-bottom:1px solid var(--line);padding:.4rem 0}
+.lesson{background:var(--gold);border:1px solid #c79a00;border-radius:.6rem;padding:.6rem .8rem;margin:.8rem 0}
+.hidden{display:none}
+footer{margin-top:3rem;font-size:.8rem;color:var(--grey);border-top:1px solid var(--line);padding-top:.8rem}
+@media (max-width:30rem){
+  html{font-size:106%}
+  h1{font-size:1.6rem}
+  .meter{grid-template-columns:6.4rem 4.2rem 1fr}
+}
+</style>
+</head>
+<body>
+<main>
+
+<h1>Top of the Feed</h1>
+<p class="lede">A classroom game on social media feeds. GOVT 3421, Youth and Politics.</p>
+
+<section class="role" aria-label="Your role and goal">
+  <div class="you">Your role</div>
+  <div class="name">Feed editor</div>
+  <p>You decide what students see first on Campus, a social app used by the students of one city.</p>
+  <p><strong>Your goal:</strong> in each round, put one post at the top of the feed. Every choice trades off attention, accuracy and agreement.</p>
+</section>
+
+<section class="howto" aria-label="How to play">
+  <strong>How to play</strong>
+  <ol>
+    <li>Read what is happening in the city.</li>
+    <li>Select one of the four posts for the top of the feed.</li>
+    <li>Select <strong>Reveal</strong> to see what your choice does.</li>
+    <li>After three rounds, choose one rule for the whole feed.</li>
+  </ol>
+</section>
+
+<details class="box">
+  <summary>Words you will need</summary>
+  <div class="word"><strong>Attention:</strong> how long users keep scrolling, reading and commenting.</div>
+  <div class="word"><strong>Accuracy:</strong> how far what users see is true and reliable.</div>
+  <div class="word"><strong>Agreement:</strong> how much the feed shows users what they already think.</div>
+  <div class="word"><strong>Engagement ranking:</strong> a feed that puts first the posts most likely to draw likes, comments and shares.</div>
+  <div class="word"><strong>Newest first:</strong> a feed that shows posts in the order they were written, the most recent at the top.</div>
+</details>
+<p class="small">Results are shown as High, Medium or Low. These ranks are illustrative: they show directions, not measurements.</p>
+
+<div id="rounds"></div>
+
+<section id="part2" class="hidden" aria-label="Part 2">
+  <h2>Part 2. One rule for the whole feed</h2>
+  <p>You can no longer pick posts one by one. Choose the rule that ranks every post on Campus, then select Reveal.</p>
+  <div class="feed" id="rules"></div>
+  <div class="actions">
+    <button class="btn" id="ruleReveal" disabled>Reveal</button>
+    <span class="small" id="ruleHint">Select a rule first.</span>
+  </div>
+  <div id="ruleResult"></div>
+</section>
+
+<section id="summary" class="hidden" aria-label="Your feed">
+  <h2>Your feed</h2>
+  <div id="sumTable"></div>
+  <div class="lesson">
+    <strong>What the game shows.</strong> No post and no rule is high on attention and accuracy and low on agreement at once. The posts that hold attention tend to tell users what they already think or to make them angry, and false claims travel with them. Accurate posts, and calm posts from the other side, hold attention less well.
+  </div>
+  <div class="actions"><button class="ghost" id="again">Play again</button></div>
+</section>
+
+<footer>
+  Made by Hugo Ferrinho Lopes for GOVT 3421, Youth and Politics, Department of Government, Georgetown University, Fall 2026. The app, the city and the posts are invented. The page stores nothing and loads nothing from other sites.
+</footer>
+</main>
+
+<script>
+"use strict";
+const $ = id => document.getElementById(id);
+const LEVEL = {3: "High", 2: "Medium", 1: "Low"};
+const KEYS = ["att", "acc", "agr"];
+const LABEL = {att: "Attention", acc: "Accuracy", agr: "Agreement"};
+
+/* Each post: att, acc, agr = 3 (High), 2 (Medium), 1 (Low), illustrative.
+   eng = rank under engagement ranking (4 = most likes, comments and shares).
+   min = minutes since the post was written (newest first picks the smallest). */
+const ROUNDS = [
+  {name: "Bus fares",
+   story: "The city council plans to raise bus fares for students. Most of your users oppose the rise.",
+   posts: [
+     {who: "Student action group", side: "shares your users’ view", min: 12,
+      text: "“They want to price us off the buses.” A short, angry video says that the student fare will double.",
+      att: 3, acc: 1, agr: 3, eng: 4,
+      why: "Users watch, comment and share, and they hear what they already think. The plan raises the fare by a quarter, not double, so many users now believe something false."},
+     {who: "City newspaper", side: "no side", min: 30,
+      text: "“What the fare plan says.” The student fare rises by a quarter next fall, and the council votes on Thursday.",
+      att: 1, acc: 3, agr: 2, eng: 1,
+      why: "Users who read it learn what the plan says. Few stop to read it, however, and many scroll on to something else."},
+     {who: "Taxpayers’ association", side: "takes the other side", min: 5,
+      text: "“Why the buses need the money.” A chart of the transit budget and the case for the rise.",
+      att: 2, acc: 3, agr: 1, eng: 2,
+      why: "Users meet an accurate argument from the other side. Some read it, whereas many skip it or argue in the comments."},
+     {who: "Meme account", side: "shares your users’ view", min: 20,
+      text: "A joke picture of the mayor in a limousine, driving past a crowded bus stop.",
+      att: 3, acc: 2, agr: 3, eng: 3,
+      why: "Users laugh and share, and the feed confirms their view. The joke makes no false claim, but it says nothing about the plan."}
+   ]},
+  {name: "Election day",
+   story: "On election day, a claim spreads that ballots cast at the campus polling station will not be counted. The claim is false.",
+   posts: [
+     {who: "Anonymous account", side: "fits what many users fear", min: 8,
+      text: "“BREAKING: campus votes will be thrown out.” The post gives no source.",
+      att: 3, acc: 1, agr: 3, eng: 4,
+      why: "The post spreads fast because it confirms a fear. Some users decide not to vote, although their votes would have counted."},
+     {who: "County election office", side: "no side", min: 2,
+      text: "“Every valid ballot is counted. Here is how the count works.”",
+      att: 1, acc: 3, agr: 2, eng: 1,
+      why: "The correction is accurate and official. It is also dry, so few users read it to the end."},
+     {who: "Student creator", side: "no side", min: 15,
+      text: "A one-minute video that traces the claim to its source and shows why it is false.",
+      att: 2, acc: 3, agr: 1, eng: 3,
+      why: "The video holds attention and corrects the claim. Users who believed the claim are told they were wrong, and some push back in the comments."},
+     {who: "A friend of many users", side: "shares your users’ view", min: 25,
+      text: "“Just voted. The line at the library is short.”",
+      att: 2, acc: 3, agr: 3, eng: 2,
+      why: "A friend’s post is accurate and pleasant to see. It does not address the false claim, so the users who saw the claim still believe it."}
+   ]},
+  {name: "Road blockade",
+   story: "Climate activists block a downtown road at rush hour. Most of your users support climate action.",
+   posts: [
+     {who: "Climate activists", side: "shares your users’ view", min: 3,
+      text: "A livestream from the road: a cheering crowd and a banner about the future.",
+      att: 3, acc: 2, agr: 3, eng: 3,
+      why: "Supporters stay and cheer. They see the protest only as the activists show it."},
+     {who: "Drivers’ page", side: "takes the other side", min: 10,
+      text: "“An ambulance is stuck behind these clowns.” Nobody has confirmed the claim.",
+      att: 3, acc: 1, agr: 1, eng: 4,
+      why: "The post draws angry comments from both sides. Users see the other side, but at its most hostile, and the claim may be false."},
+     {who: "Local radio", side: "no side", min: 18,
+      text: "What the protesters want, and when the road will reopen.",
+      att: 1, acc: 3, agr: 2, eng: 1,
+      why: "Users get the facts they need. The report carries little emotion, however, and many scroll past it."},
+     {who: "Climate scientist", side: "shares your users’ view", min: 40,
+      text: "A thread on what the evidence says about the protesters’ main demand.",
+      att: 2, acc: 3, agr: 3, eng: 2,
+      why: "Supporters learn something accurate, and the feed tells them that they are right."}
+   ]}
+];
+
+const RULES = [
+  {name: "Most likes and comments first", desc: "The posts most likely to draw likes, comments and shares go to the top.",
+   att: 3, acc: 1, agr: 3,
+   why: "Users scroll the longest. Posts that confirm what users think, and posts that make them angry, rise to the top, and false claims rise with them."},
+  {name: "Newest first", desc: "Posts appear in the order they were written, the most recent at the top.",
+   att: 1, acc: 2, agr: 2,
+   why: "Heated posts no longer jump the queue, so the feed is calmer and less one-sided. Users leave sooner, however, and some move to other apps. Nothing screens out unreliable sources."},
+  {name: "Trusted sources first", desc: "Posts from sources with a record of accuracy go to the top.",
+   att: 2, acc: 3, agr: 2,
+   why: "False claims sink and reliable reports rise. Users stay a little less long, and those who distrust the trusted sources may call the feed biased."},
+  {name: "Mix in the other side", desc: "Posts from the side users disagree with are moved up.",
+   att: 1, acc: 2, agr: 1,
+   why: "Users see the other side more often, but they engage with it less than with their own side. Their views do not change quickly, and some users leave."}
+];
+
+const LETTERS = ["A", "B", "C", "D"];
+let picks = [null, null, null];
+let revealed = [false, false, false];
+let rulePick = null;
+
+function ago(m){ return m + " min ago"; }
+function meters(o){
+  return '<div class="meters">' + KEYS.map(k =>
+    '<div class="meter ' + k + '"><span class="lab">' + LABEL[k] + '</span><span class="val">' + LEVEL[o[k]] +
+    '</span><span class="bars" aria-hidden="true">' + [1,2,3].map(i => '<span class="' + (i <= o[k] ? "on" : "") + '"></span>').join("") + '</span></div>'
+  ).join("") + '</div>';
+}
+function engPick(r){ let b = 0; ROUNDS[r].posts.forEach((p,i) => { if (p.eng > ROUNDS[r].posts[b].eng) b = i; }); return b; }
+function newPick(r){ let b = 0; ROUNDS[r].posts.forEach((p,i) => { if (p.min < ROUNDS[r].posts[b].min) b = i; }); return b; }
+function short(r,i){ const p = ROUNDS[r].posts[i]; return LETTERS[i] + " (" + p.who + ")"; }
+
+function buildRounds(){
+  const host = $("rounds"); host.innerHTML = "";
+  ROUNDS.forEach((R, r) => {
+    const sec = document.createElement("section");
+    sec.id = "round" + r;
+    if (r > 0) sec.className = "hidden";
+    sec.innerHTML =
+      '<h2>Round ' + (r+1) + ' of 3. ' + R.name + '</h2>' +
+      '<p class="story">' + R.story + '</p>' +
+      '<div class="feed" role="group" aria-label="Posts for round ' + (r+1) + '">' +
+      R.posts.map((p,i) =>
+        '<button class="post" type="button" aria-pressed="false" data-r="' + r + '" data-i="' + i + '">' +
+        '<span class="who">' + LETTERS[i] + '. ' + p.who + '</span><span class="pick">Top post</span><br>' +
+        '<span class="meta">' + ago(p.min) + ', ' + p.side + '</span>' +
+        '<span class="txt">' + p.text + '</span></button>').join("") +
+      '</div>' +
+      '<div class="actions"><button class="btn" id="rev' + r + '" disabled>Reveal</button><span class="small" id="hint' + r + '">Select a post first.</span></div>' +
+      '<div id="res' + r + '"></div>';
+    host.appendChild(sec);
+  });
+  host.querySelectorAll(".post").forEach(b => b.addEventListener("click", () => {
+    const r = +b.dataset.r, i = +b.dataset.i;
+    if (revealed[r]) return;
+    picks[r] = i;
+    $("round" + r).querySelectorAll(".post").forEach(x => x.setAttribute("aria-pressed", String(+x.dataset.i === i)));
+    $("rev" + r).disabled = false; $("hint" + r).textContent = "";
+  }));
+  ROUNDS.forEach((R, r) => $("rev" + r).addEventListener("click", () => reveal(r)));
+}
+
+function reveal(r){
+  if (picks[r] === null || revealed[r]) return;
+  revealed[r] = true;
+  const R = ROUNDS[r], i = picks[r], p = R.posts[i], e = engPick(r), n = newPick(r);
+  $("round" + r).querySelectorAll(".post").forEach(x => x.disabled = true);
+  $("rev" + r).disabled = true; $("rev" + r).textContent = "Revealed";
+  const sameE = (e === i), sameN = (n === i);
+  $("res" + r).innerHTML =
+    '<div class="result" tabindex="-1" id="out' + r + '"><h3>Your top post: ' + LETTERS[i] + '. ' + p.who + '</h3>' +
+    meters(p) + '<p>' + p.why + '</p>' +
+    '<div class="compare">' +
+    '<p><span class="tag">Engagement ranking</span> would put ' + short(r,e) + ' on top' + (sameE ? ', the same post as you.' : ', because it draws the most likes and comments.') + '</p>' +
+    '<p><span class="tag">Newest first</span> would put ' + short(r,n) + ' on top' + (sameN ? ', the same post as you.' : ', because it is the most recent.') + '</p>' +
+    '</div>' +
+    '<div class="actions"><button class="btn" id="next' + r + '">' + (r < 2 ? "Next round" : "Go to Part 2") + '</button></div></div>';
+  $("out" + r).focus();
+  $("next" + r).addEventListener("click", () => {
+    $("next" + r).disabled = true;
+    const target = (r < 2) ? $("round" + (r+1)) : $("part2");
+    target.classList.remove("hidden");
+    target.scrollIntoView({behavior: "smooth", block: "start"});
+  });
+}
+
+function buildRules(){
+  const host = $("rules");
+  host.innerHTML = RULES.map((u,i) =>
+    '<button class="post" type="button" aria-pressed="false" data-u="' + i + '">' +
+    '<span class="who">' + u.name + '</span><span class="pick">Your rule</span>' +
+    '<span class="txt">' + u.desc + '</span></button>').join("");
+  host.querySelectorAll(".post").forEach(b => b.addEventListener("click", () => {
+    if ($("ruleReveal").textContent === "Revealed") return;
+    rulePick = +b.dataset.u;
+    host.querySelectorAll(".post").forEach(x => x.setAttribute("aria-pressed", String(+x.dataset.u === rulePick)));
+    $("ruleReveal").disabled = false; $("ruleHint").textContent = "";
+  }));
+}
+
+/* attached once, at load */
+function ruleReveal(){
+    if (rulePick === null || $("ruleReveal").textContent === "Revealed") return;
+    const u = RULES[rulePick];
+    $("rules").querySelectorAll(".post").forEach(x => x.disabled = true);
+    $("ruleReveal").disabled = true; $("ruleReveal").textContent = "Revealed";
+    $("ruleResult").innerHTML =
+      '<div class="result" tabindex="-1" id="ruleOut"><h3>Your rule: ' + u.name + '</h3>' + meters(u) + '<p>' + u.why + '</p>' +
+      '<div class="compare"><p><strong>The other rules:</strong></p>' +
+      RULES.map((v,j) => j === rulePick ? "" :
+        '<p>' + v.name + ': attention ' + LEVEL[v.att].toLowerCase() + ', accuracy ' + LEVEL[v.acc].toLowerCase() + ', agreement ' + LEVEL[v.agr].toLowerCase() + '.</p>').join("") +
+      '</div><div class="actions"><button class="btn" id="toSum">See your feed</button></div></div>';
+    $("ruleOut").focus();
+    $("toSum").addEventListener("click", () => {
+      $("toSum").disabled = true;
+      buildSummary();
+      $("summary").classList.remove("hidden");
+      $("summary").scrollIntoView({behavior: "smooth", block: "start"});
+    });
+}
+
+function buildSummary(){
+  const line = (label, choice, o) =>
+    '<div class="sumrow"><div><strong>' + label + ':</strong> ' + choice + '</div>' +
+    '<div class="small">Attention ' + LEVEL[o.att].toLowerCase() + ', accuracy ' + LEVEL[o.acc].toLowerCase() + ', agreement ' + LEVEL[o.agr].toLowerCase() + '</div></div>';
+  let rows = ROUNDS.map((R, r) => line(R.name, LETTERS[picks[r]] + '. ' + R.posts[picks[r]].who, R.posts[picks[r]])).join("");
+  rows += line("Rule", RULES[rulePick].name, RULES[rulePick]);
+  $("sumTable").innerHTML = rows +
+    '<p class="small">Engagement ranking would have put on top: ' + ROUNDS.map((R,r) => short(r, engPick(r))).join("; ") + '.</p>';
+}
+
+function reset(){
+  picks = [null, null, null]; revealed = [false, false, false]; rulePick = null;
+  buildRounds(); buildRules();
+  $("ruleReveal").disabled = true; $("ruleReveal").textContent = "Reveal"; $("ruleHint").textContent = "Select a rule first.";
+  $("ruleResult").innerHTML = ""; $("sumTable").innerHTML = "";
+  $("part2").classList.add("hidden"); $("summary").classList.add("hidden");
+  window.scrollTo({top: 0, behavior: "smooth"});
+}
+$("again").addEventListener("click", reset);
+$("ruleReveal").addEventListener("click", ruleReveal);
+buildRounds(); buildRules();
+</script>
+</body>
+</html>
