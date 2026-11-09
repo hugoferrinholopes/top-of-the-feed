@@ -62,8 +62,8 @@ details.box summary{cursor:pointer;font-weight:700;color:var(--blue);min-height:
 .post .who{font-weight:700;color:var(--blue)}
 .post .meta{font-size:.8rem;color:var(--grey)}
 .post .txt{display:block;margin-top:.25rem}
-.post .pick{display:inline-block;font-size:.78rem;font-weight:700;color:#fff;background:var(--orange);border-radius:.3rem;padding:0 .4rem;margin-left:.3rem;visibility:hidden}
-.post[aria-pressed="true"] .pick{visibility:visible}
+.post .pick{display:none;font-size:.78rem;font-weight:700;color:#fff;background:var(--orange);border-radius:.3rem;padding:0 .4rem;margin-left:.3rem}
+.post[aria-pressed="true"] .pick{display:inline-block}
 .post[disabled]{cursor:default}
 .actions{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin:.6rem 0}
 /* results */
